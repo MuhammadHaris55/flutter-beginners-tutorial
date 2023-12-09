@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:myapp/second_screen.dart';
 
 void main() {
@@ -33,106 +34,312 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  List<int> studentList = [0, 1];
+  TextEditingController nameController =
+      // TextEditingController(text: 'my profile');
+      TextEditingController();
 
-  void _incrementCounter() {
-    print('btn press');
-    setState(() {
-      _counter++;
-    });
-  }
-
-  TextEditingController nameController = TextEditingController();
-  List myList = ['first', 'second', 'third'];
+  List studentList = [
+    // 'first', 'second', 'third',
+    //  'forth', 'fifth', 'sixth'
+  ];
+  List colorsList = [
+    Colors.amber,
+    Colors.green,
+    Colors.purpleAccent,
+    Colors.amber,
+    Colors.green,
+    Colors.purpleAccent,
+    Colors.purpleAccent,
+    Colors.amber,
+    Colors.green,
+    Colors.purpleAccent,
+  ];
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    print('print value ${nameController.text}');
     return Scaffold(
       backgroundColor: Colors.green,
       appBar: AppBar(
-        leading: const Icon(Icons.arrow_back),
         centerTitle: true,
         title: Text(
-          // widget.title != null ? widget.title! : 'my name',
-          widget.title ?? 'my name',
+          widget.title ?? 'Todo App',
         ),
       ),
       body: Container(
-        // padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         margin: const EdgeInsets.all(10),
         width: size.width - 20,
         height: size.height - 20,
-        // height: 200.0,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(50.0),
         ),
         child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            const SizedBox(height: 30),
             TextFormField(
-              // initialValue: 'profile pic',
               controller: nameController,
-              decoration: InputDecoration(hintText: 'Your Name'),
+              decoration: const InputDecoration(hintText: 'Your Name'),
             ),
-            const SizedBox(height: 20),
-            const Text('Profile Picture'),
-            Image.asset('assets/images/profile-picture.png'),
-            const SizedBox(height: 20),
-            // // Image.asset('assets/images/profile.jpeg'),
-            // // const SizedBox(height: 20),
-            // Image.network(
-            //     'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif'),
-            // Image.network('https://picsum.photos/250?image=9'),
-            // // CircleAvatar(
-            // //   backgroundImage: Image(image: ''),
-            // // ),
-            const CircleAvatar(
-              radius: 50,
-              backgroundImage:
-                  // Image.asset('assets/images/profile-picture.png'),
+            ElevatedButton(
+                onPressed: () {
+                  print('my controller value === ${nameController.text}');
+                  if (nameController.text.isNotEmpty) {
+                    setState(() {
+                      studentList.add(nameController.text);
+                      nameController.clear();
+                    });
+                  }
+                },
+                child: const Text('Add Task')),
+            const SizedBox(height: 40),
 
-                  // AssetImage('assets/images/profile-picture.png'),
-                  NetworkImage('https://picsum.photos/250?image=9'),
-            )
+            // // ----------------------------- Simple ListView -----------------------
+            // Expanded(
+            //   child: ListView(
+            //     padding: const EdgeInsets.all(8),
+            //     children: <Widget>[
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[600],
+            //         child: const Center(child: Text('Entry A')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[500],
+            //         child: const Center(child: Text('Entry B')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[100],
+            //         child: const Center(child: Text('Entry C')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[600],
+            //         child: const Center(child: Text('Entry A')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[500],
+            //         child: const Center(child: Text('Entry B')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[100],
+            //         child: const Center(child: Text('Entry C')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[600],
+            //         child: const Center(child: Text('Entry A')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[500],
+            //         child: const Center(child: Text('Entry B')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[100],
+            //         child: const Center(child: Text('Entry C')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[600],
+            //         child: const Center(child: Text('Entry A')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[500],
+            //         child: const Center(child: Text('Entry B')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[100],
+            //         child: const Center(child: Text('Entry C')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[600],
+            //         child: const Center(child: Text('Entry A')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[500],
+            //         child: const Center(child: Text('Entry B')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[100],
+            //         child: const Center(child: Text('Entry C')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[600],
+            //         child: const Center(child: Text('Entry A')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[500],
+            //         child: const Center(child: Text('Entry B')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[100],
+            //         child: const Center(child: Text('Entry C')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[600],
+            //         child: const Center(child: Text('Entry A')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[500],
+            //         child: const Center(child: Text('Entry B')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[100],
+            //         child: const Center(child: Text('Entry C')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[600],
+            //         child: const Center(child: Text('Entry A')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[500],
+            //         child: const Center(child: Text('Entry B')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[100],
+            //         child: const Center(child: Text('Entry C')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[600],
+            //         child: const Center(child: Text('Entry A')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[500],
+            //         child: const Center(child: Text('Entry B')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[100],
+            //         child: const Center(child: Text('Entry C')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[600],
+            //         child: const Center(child: Text('Entry A')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[500],
+            //         child: const Center(child: Text('Entry B')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[100],
+            //         child: const Center(child: Text('Entry C')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[600],
+            //         child: const Center(child: Text('Entry A')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[500],
+            //         child: const Center(child: Text('Entry B')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[100],
+            //         child: const Center(child: Text('Entry C')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[600],
+            //         child: const Center(child: Text('Entry A')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[500],
+            //         child: const Center(child: Text('Entry B')),
+            //       ),
+            //       Container(
+            //         height: 50,
+            //         color: Colors.amber[100],
+            //         child: const Center(child: Text('Entry C')),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+
+            // // ----------------------------- ListView.builder ----------------------
+            // Expanded(
+            //   child: ListView.builder(
+            //     padding: const EdgeInsets.all(8),
+            //     itemCount: studentList.length,
+            //     itemBuilder: (BuildContext context, int index) {
+            //       var lastItem = index == studentList.length - 1;
+            //       return Column(
+            //         children: [
+            //           Container(
+            //             height: 50,
+            //             color: colorsList[index],
+            //             child: Center(
+            //                 child: Text('Student Name ${studentList[index]}')),
+            //           ),
+            //           lastItem
+            //               ? const SizedBox()
+            //               : const Divider(
+            //                   // height: 51,
+            //                   thickness: 10,
+            //                   color: Colors.black,
+            //                   indent: 20,
+            //                   endIndent: 20,
+            //                 ),
+            //         ],
+            //       );
+            //     },
+            //   ),
+            // ),
+
+            // ----------------------------- ListView.seprated ----------------------
+            Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.all(8),
+                itemCount: studentList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    height: 50,
+                    color: colorsList[index],
+                    child: Center(child: Text('${studentList[index]}')),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(
+                  // height: 51,
+                  thickness: 10,
+                  color: Colors.black,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+              ),
+            ),
           ],
         ),
       ),
-
-      // Center(
-      //   child: Column(
-      //     // mainAxisAlignment: MainAxisAlignment.center,
-      //     // crossAxisAlignment: CrossAxisAlignment.end,
-      //     children: <Widget>[
-      //       const Text(
-      //         'You have pushed the button this many times:',
-      //       ),
-      //       Text(
-      //         '${studentList[1]}',
-      //         style: Theme.of(context).textTheme.headline4,
-      //       ),
-      //       ElevatedButton(
-      //         // style: style,
-      //         onPressed: () {
-      //           Navigator.push(
-      //             context,
-      //             MaterialPageRoute(builder: (context) => const SecondScreen()),
-      //           );
-      //         },
-      //         child: const Text('Enabled'),
-      //       ),
-      //     ],
-      //   ),
-      // ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
