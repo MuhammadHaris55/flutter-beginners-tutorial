@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:myapp/second_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +13,41 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        appBarTheme: const AppBarTheme(
+          // color: Colors.green,
+          backgroundColor: Colors.red,
+          foregroundColor: Colors.black,
+          // elevation: 20.0,
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            foregroundColor: Colors.purple,
+            backgroundColor: Colors.cyan,
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            foregroundColor: Colors.black,
+            backgroundColor: Colors.red,
+          ),
+        ),
+        inputDecorationTheme: const InputDecorationTheme(
+          filled: true,
+          // fillColor: Colors.pink,
+          // iconColor: Colors.teal,
+          prefixIconColor: Colors.teal,
+          suffixIconColor: Colors.black,
+          focusColor: Colors.indigoAccent,
+          floatingLabelBehavior: FloatingLabelBehavior.never,
+          labelStyle: TextStyle(color: Color(0xfff1f2ef), fontSize: 18),
+          hintStyle: TextStyle(
+            color: Colors.brown,
+            // fontFamily: appFontFamily,
+          ),
+          // isDense: true,
+          // contentPadding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
+        ),
+        primarySwatch: Colors.yellow,
       ),
       home: const MyHomePage(
           // title: 'Flutter demo app',
@@ -61,19 +93,25 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.green,
+      // backgroundColor: Colors.green,
       appBar: AppBar(
+        backgroundColor: Colors.green,
+        leading: const Icon(Icons.arrow_back_ios_new_sharp),
+        actions: const [
+          Icon(Icons.notifications),
+          Icon(Icons.menu),
+        ],
         centerTitle: true,
         title: Text(
           widget.title ?? 'Todo App',
         ),
-        flexibleSpace: Container(
-            decoration: const BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.fitWidth,
-            image: AssetImage('assets/images/profile-picture.png'),
-          ),
-        )),
+        // flexibleSpace: Container(
+        //     decoration: const BoxDecoration(
+        //   image: DecorationImage(
+        //     fit: BoxFit.fitWidth,
+        //     image: AssetImage('assets/images/profile-picture.png'),
+        //   ),
+        // )),
       ),
       body: Container(
         padding: const EdgeInsets.all(10),
@@ -82,6 +120,14 @@ class _MyHomePageState extends State<MyHomePage> {
         height: size.height - 20,
         decoration: BoxDecoration(
           color: Colors.white,
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Colors.blue,
+              Colors.red,
+            ],
+          ),
           borderRadius: BorderRadius.circular(50.0),
         ),
         child: Form(
@@ -93,6 +139,10 @@ class _MyHomePageState extends State<MyHomePage> {
               TextFormField(
                 textCapitalization: TextCapitalization.words,
                 textInputAction: TextInputAction.go,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.email),
+                  suffixIcon: Icon(Icons.forward_sharp),
+                ),
               ),
               TextFormField(
                 keyboardType: TextInputType.phone,
@@ -134,6 +184,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   //   });
                   // }
                 },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.red,
+                ),
                 child: const Text('Add Task'),
               ),
               OutlinedButton(
