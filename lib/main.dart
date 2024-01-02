@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:myapp/common/submit_button.dart';
+import 'package:myapp/routing/app_router.dart';
+import 'package:myapp/second_screen.dart';
+
+import 'common/heading.dart';
 
 void main() {
   runApp(const MyApp());
@@ -49,6 +54,7 @@ class MyApp extends StatelessWidget {
         ),
         primarySwatch: Colors.yellow,
       ),
+      onGenerateRoute: (settings) => generateRoute(settings),
       home: const MyHomePage(
           // title: 'Flutter demo app',
           ),
@@ -135,6 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              Heading(text: 'Heading'),
               const SizedBox(height: 30),
               TextFormField(
                 textCapitalization: TextCapitalization.words,
@@ -190,9 +197,31 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 child: const Text('Add Task'),
               ),
-              OutlinedButton(
-                onPressed: () {},
-                child: const Text('Outlined button'),
+              // OutlinedButton(
+              //   onPressed: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //           builder: (context) => const SecondScreen()),
+              //     );
+              //   },
+              //   child: const Text('update'),
+              // ),
+              SubmitButton(
+                  text: 'update',
+                  onpressHandler: () {
+                    print('working');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SecondScreen(),
+                      ),
+                    );
+                  }),
+              Heading(text: 'Spacer'),
+              SubmitButton(
+                text: 'edit',
+                onpressHandler: () {},
               ),
               const SizedBox(height: 40),
 
