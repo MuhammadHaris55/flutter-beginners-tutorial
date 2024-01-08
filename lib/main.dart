@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:myapp/common/submit_button.dart';
 import 'package:myapp/routing/app_router.dart';
 import 'package:myapp/second_screen.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'common/heading.dart';
 
 void main() {
@@ -94,6 +95,35 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   final _formKey = GlobalKey<FormState>();
+
+  final dio = Dio();
+
+  void apiIntegerationDio() async {
+    try {
+      // final response = await dio.get('https://api.publicapis.org/entries');
+      final response = await dio.get('https://reqres.in/api/users/2');
+      print('dio response == ${response.data}');
+    } catch (e) {
+      print('exception ${e.toString()}');
+    }
+  }
+
+  apiIntegerationHttp() async {
+    var url = Uri.https('reqres.in', 'api/users/2');
+    // var url = Uri.https('api.publicapis.org', 'entries');
+    try {
+      http.Response response = await http.get(
+        url,
+        // Uri.parse('https://api.publicapis.org/entries/'),
+        // Uri.parse('https://reqres.in/api/users/2'),
+      );
+      print('http response == ${response.body.toString()}');
+    } catch (e) {
+      print('exception ' + e.toString());
+    }
+    // print('Response status: ${response.statusCode}');
+    // print('Response body: ${response.body}');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -208,20 +238,22 @@ class _MyHomePageState extends State<MyHomePage> {
               //   child: const Text('update'),
               // ),
               SubmitButton(
-                  text: 'update',
-                  onpressHandler: () {
-                    print('working');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SecondScreen(),
-                      ),
-                    );
-                  }),
+                text: 'Dio',
+                onpressHandler: apiIntegerationDio,
+                // () {
+                //   print('working');
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => const SecondScreen(),
+                //     ),
+                //   );
+                // }
+              ),
               Heading(text: 'Spacer'),
               SubmitButton(
-                text: 'edit',
-                onpressHandler: () {},
+                text: 'Http',
+                onpressHandler: apiIntegerationHttp,
               ),
               const SizedBox(height: 40),
 
