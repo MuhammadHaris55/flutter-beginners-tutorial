@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:myapp/common/submit_button.dart';
+import 'package:myapp/features/api_integeration/api_screen.dart';
 import 'package:myapp/routing/app_router.dart';
 import 'package:myapp/second_screen.dart';
 import 'package:http/http.dart' as http;
@@ -56,9 +57,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.yellow,
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: const MyHomePage(
-          // title: 'Flutter demo app',
-          ),
+      home: const ApiIntegerationScreen(),
+      // home: const MyHomePage(
+      //     // title: 'Flutter demo app',
+      //     ),
       // home: const SecondScreen(),
     );
   }
@@ -100,6 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void apiIntegerationDio() async {
     try {
+      print('old dio func');
       // final response = await dio.get('https://api.publicapis.org/entries');
       final response = await dio.get('https://reqres.in/api/users/2');
       print('dio response == ${response.data}');
@@ -109,6 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   apiIntegerationHttp() async {
+    print('old http func');
     var url = Uri.https('reqres.in', 'api/users/2');
     // var url = Uri.https('api.publicapis.org', 'entries');
     try {
