@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:myapp/common/submit_button.dart';
 import 'package:myapp/features/api_integeration/api_screen.dart';
 import 'package:myapp/routing/app_router.dart';
-import 'package:myapp/second_screen.dart';
-import 'package:http/http.dart' as http;
-import 'package:dio/dio.dart';
-import 'common/heading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -57,235 +52,133 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.yellow,
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: const ApiIntegerationScreen(),
-      // home: const MyHomePage(
-      //     // title: 'Flutter demo app',
-      //     ),
+      // home: const ApiIntegerationScreen(),
+      home: const MyHomePage(
+        title: 'Flutter demo app',
+      ),
       // home: const SecondScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, this.title});
+// class MyHomePage extends StatefulWidget {
+//   const MyHomePage({super.key, this.title});
 
-  final String? title;
+//   final String? title;
+
+//   @override
+//   State<MyHomePage> createState() => _MyHomePageState();
+// }
+
+// class _MyHomePageState extends State<MyHomePage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       // backgroundColor: Colors.green,
+//       appBar: AppBar(
+//         backgroundColor: Colors.green,
+//         leading: const Icon(Icons.arrow_back_ios_new_sharp),
+//         actions: const [
+//           Icon(Icons.notifications),
+//           Icon(Icons.menu),
+//         ],
+//         centerTitle: true,
+//         title: Text(
+//           widget.title ?? 'Todo App',
+//         ),
+//         // flexibleSpace: Container(
+//         //     decoration: const BoxDecoration(
+//         //   image: DecorationImage(
+//         //     fit: BoxFit.fitWidth,
+//         //     image: AssetImage('assets/images/profile-picture.png'),
+//         //   ),
+//         // )),
+//       ),
+//       body: Container(),
+//     );
+//   }
+// }
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  TextEditingController nameController =
-      // TextEditingController(text: 'my profile');
-      TextEditingController();
-
-  List studentList = [
-    // 'first', 'second', 'third',
-    //  'forth', 'fifth', 'sixth'
-  ];
-  List colorsList = [
-    Colors.amber,
-    Colors.green,
-    Colors.purpleAccent,
-    Colors.amber,
-    Colors.green,
-    Colors.purpleAccent,
-    Colors.amber,
-    Colors.green,
-    Colors.purpleAccent,
-  ];
-
-  final _formKey = GlobalKey<FormState>();
-
-  final dio = Dio();
-
-  void apiIntegerationDio() async {
-    try {
-      print('old dio func');
-      // final response = await dio.get('https://api.publicapis.org/entries');
-      final response = await dio.get('https://reqres.in/api/users/2');
-      print('dio response == ${response.data}');
-    } catch (e) {
-      print('exception ${e.toString()}');
-    }
+  int _counter = 0;
+  @override
+  void initState() {
+    super.initState();
+    getSharedPrefVal();
   }
 
-  apiIntegerationHttp() async {
-    print('old http func');
-    var url = Uri.https('reqres.in', 'api/users/2');
-    // var url = Uri.https('api.publicapis.org', 'entries');
-    try {
-      http.Response response = await http.get(
-        url,
-        // Uri.parse('https://api.publicapis.org/entries/'),
-        // Uri.parse('https://reqres.in/api/users/2'),
-      );
-      print('http response == ${response.body.toString()}');
-    } catch (e) {
-      print('exception ' + e.toString());
-    }
-    // print('Response status: ${response.statusCode}');
-    // print('Response body: ${response.body}');
+  getSharedPrefVal() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    _counter = prefs.getInt('counter') ?? 0;
+    setState(() {});
+  }
+
+  void updateValueInSharedPreference(int value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    print('previous value ==> ${prefs.getInt('counter')}');
+    await prefs.setInt('counter', value);
+    print('updated value ==> ${prefs.getInt('counter')}');
+  }
+
+  void _incrementCounter() {
+    setState(() => _counter++);
+    updateValueInSharedPreference(_counter);
   }
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Scaffold(
-      // backgroundColor: Colors.green,
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        leading: const Icon(Icons.arrow_back_ios_new_sharp),
-        actions: const [
-          Icon(Icons.notifications),
-          Icon(Icons.menu),
-        ],
-        centerTitle: true,
-        title: Text(
-          widget.title ?? 'Todo App',
-        ),
-        // flexibleSpace: Container(
-        //     decoration: const BoxDecoration(
-        //   image: DecorationImage(
-        //     fit: BoxFit.fitWidth,
-        //     image: AssetImage('assets/images/profile-picture.png'),
-        //   ),
-        // )),
+        title: Text(widget.title),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(10),
-        margin: const EdgeInsets.all(10),
-        width: size.width - 20,
-        height: size.height - 20,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Colors.blue,
-              Colors.red,
-            ],
-          ),
-          borderRadius: BorderRadius.circular(50.0),
-        ),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Heading(text: 'Heading'),
-              const SizedBox(height: 30),
-              TextFormField(
-                textCapitalization: TextCapitalization.words,
-                textInputAction: TextInputAction.go,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.email),
-                  suffixIcon: Icon(Icons.forward_sharp),
-                ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Stack(
+            children: <Widget>[
+              Container(
+                width: 400,
+                height: 200,
+                color: Colors.red,
               ),
-              TextFormField(
-                keyboardType: TextInputType.phone,
-                textInputAction: TextInputAction.next,
+              Container(
+                width: 200,
+                height: 100,
+                color: Colors.blue,
               ),
-              TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.next,
-              ),
-              TextFormField(
-                controller: nameController,
-                keyboardType: TextInputType.number,
-                // readOnly: true,
-                // obscureText: true,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-                ],
-                decoration: const InputDecoration(hintText: 'Your Name'),
-                validator: (value) {
-                  print(value);
-                  if (value!.length != 5) {
-                    return "length must be equal to 5";
-                  }
-                },
-                textInputAction: TextInputAction.done,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    print('validating');
-                  } else {
-                    print('not validate');
-                  }
-                  // print('my controller value === ${nameController.text}');
-                  // if (nameController.text.isNotEmpty) {
-                  //   setState(() {
-                  //     studentList.add(nameController.text);
-                  //     nameController.clear();
-                  //   });
-                  // }
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.red,
-                ),
-                child: const Text('Add Task'),
-              ),
-              // OutlinedButton(
-              //   onPressed: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //           builder: (context) => const SecondScreen()),
-              //     );
-              //   },
-              //   child: const Text('update'),
-              // ),
-              SubmitButton(
-                text: 'Dio',
-                onpressHandler: apiIntegerationDio,
-                // () {
-                //   print('working');
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => const SecondScreen(),
-                //     ),
-                //   );
-                // }
-              ),
-              Heading(text: 'Spacer'),
-              SubmitButton(
-                text: 'Http',
-                onpressHandler: apiIntegerationHttp,
-              ),
-              const SizedBox(height: 40),
-
-              // ----------------------------- ListView.seprated ----------------------
-              Expanded(
-                child: ListView.separated(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: studentList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      height: 50,
-                      color: colorsList[index],
-                      child: Center(child: Text('${studentList[index]}')),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(
-                    // height: 51,
-                    thickness: 10,
-                    color: Colors.black,
-                    indent: 20,
-                    endIndent: 20,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Text('You have pushed the button this many times:'),
+                  Text(
+                    '$_counter',
+                    style: Theme.of(context).textTheme.headline4,
                   ),
-                ),
+                ],
+              ),
+              Container(
+                width: 100,
+                height: 50,
+                color: Colors.yellow,
               ),
             ],
           ),
-        ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
       ),
     );
   }

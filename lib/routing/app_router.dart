@@ -7,7 +7,9 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
     case RoutePath.homePage:
       return MaterialPageRoute(
-        builder: (_) => const MyHomePage(),
+        builder: (_) => const MyHomePage(
+          title: '',
+        ),
       );
 
     case RoutePath.secondScreen:
