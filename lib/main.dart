@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/common/bottom_navigation_bar.dart';
 import 'package:myapp/features/api_integeration/api_screen.dart';
 import 'package:myapp/routing/app_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,10 +54,11 @@ class MyApp extends StatelessWidget {
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
       // home: const ApiIntegerationScreen(),
-      home: const MyHomePage(
-        title: 'Flutter demo app',
-      ),
+      // home: const MyHomePage(
+      //   title: 'Flutter demo app',
+      // ),
       // home: const SecondScreen(),
+      home: const AppCustomBottomNavigationBar(),
     );
   }
 }
@@ -109,29 +111,23 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  @override
-  void initState() {
-    super.initState();
-    getSharedPrefVal();
-  }
+  int _currentIndex = 0;
 
-  getSharedPrefVal() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    _counter = prefs.getInt('counter') ?? 0;
-    setState(() {});
-  }
+  List<Widget> bodyWidget = const [
+    Text(
+      "Home",
+      style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+    ),
+    Text(
+      "Notification",
+      style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+    ),
+  ];
 
-  void updateValueInSharedPreference(int value) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    print('previous value ==> ${prefs.getInt('counter')}');
-    await prefs.setInt('counter', value);
-    print('updated value ==> ${prefs.getInt('counter')}');
-  }
-
-  void _incrementCounter() {
-    setState(() => _counter++);
-    updateValueInSharedPreference(_counter);
+  _onTapFunc(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 
   @override
@@ -140,46 +136,23 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Stack(
-            children: <Widget>[
-              Container(
-                width: 400,
-                height: 200,
-                color: Colors.red,
-              ),
-              Container(
-                width: 200,
-                height: 100,
-                color: Colors.blue,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text('You have pushed the button this many times:'),
-                  Text(
-                    '$_counter',
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                ],
-              ),
-              Container(
-                width: 100,
-                height: 50,
-                color: Colors.yellow,
-              ),
-            ],
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      body: Center(child: bodyWidget.elementAt(_currentIndex)),
+      bottomNavigationBar: const AppCustomBottomNavigationBar(),
+      // BottomNavigationBar(
+      //   selectedItemColor: Colors.indigo,
+      //   // unselectedItemColor: Colors.black,
+      //   items: const [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.home),
+      //       label: 'Home',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.notifications),
+      //       label: 'Notification',
+      //     ),
+      //   ],
+      //   onTap: _onTapFunc,
+      // ),
     );
   }
 }
